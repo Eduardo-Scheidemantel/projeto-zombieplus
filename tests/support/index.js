@@ -6,14 +6,16 @@ const { Toast } = require('../pages/Components')
 const { MoviesPage } = require('../pages/MoviesPage')
 
 const test = base.extend({
-    page: async ({page}, use) =>{
-        await use({
-            ...page,
-            landing: new LandingPage(page),
-            login: new AdminPage(page),
-            movies: new MoviesPage(page),
-            toast: new Toast(page)
-        })
+    page: async ({ page }, use) => {
+
+        const context = page
+
+        context['landing'] = new LandingPage(page)
+        context['login'] = new AdminPage(page)
+        context['movies'] = new MoviesPage(page)
+        context['toast'] = new Toast(page)
+
+        await use(page)
     }
 })
 
