@@ -7,15 +7,23 @@ export class MoviesPage {
         this.page = page
     }
 
-    async isLoggedIn() {
+    async isLoggedIn(username) {
 
-        await this.page.waitForLoadState('networkidle')
-        await expect(this.page).toHaveURL(/.*admin/)
+        const loggedUser = this.page.locator('.logged-user')
+        await expect(loggedUser).toHaveText(`Olá, ${username}`)
+    }
+
+    async goForm() {
+        await this.page.locator('a[href$="register"]').click()
+    }
+
+    async submit() {
+        await this.page.getByRole('button', { name: 'Cadastrar' }).click()
     }
 
     async create(title, overview, company, release_year) {
 
-        await this.page.locator('a[href$="register"]').click() //clicar no botão "+" para cadastro de filmes
+        await this.goForm()
 
         await this.page.locator('#title').fill(title)
         await this.page.locator('#overview').fill(overview)
@@ -29,6 +37,12 @@ export class MoviesPage {
         await this.page.locator('.react-select__option')
             .filter({ hasText: release_year })
             .click()
-        await this.page.getByRole('button', { name: 'Cadastrar' }).click()
+
+        await this.submit()
     }
+
+    async alertHaveText(target) {
+        await expect(this.page.locator(".alert")).toHaveText(target);
+    }
+
 }
