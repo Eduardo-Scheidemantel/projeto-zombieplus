@@ -7,10 +7,10 @@
         "featured": true,
         "cover": "/covers/movies/wwz.png"
     },
-    "resident_evil_o_hospedeiro": {
+    "duplicate": {
         "title": "Resident Evil: O Hospedeiro",
         "overview": "Alice se junta a sobreviventes para enfrentar a Corporação Umbrella e os zumbis mutantes criados por ela.",
-        "company": "Screen Gems",
+        "company": "Paramount Pictures",
         "release_year": 2002,
         "featured": false,
         "cover": "/covers/movies/resident-evil.jpg"
@@ -18,7 +18,7 @@
     "a_noite_dos_mortos_vivos": {
         "title": "A Noite dos Mortos-Vivos",
         "overview": "Um grupo de pessoas fica preso em uma casa enquanto zumbis canibais famintos cercam o local.",
-        "company": "Continental Distributing",
+        "company": "Paramount Pictures",
         "release_year": 1968,
         "featured": false,
         "cover": "/caminho/para/a_noite_dos_mortos_vivos.png"
@@ -26,7 +26,7 @@
     "exterminio": {
         "title": "Extermínio",
         "overview": "Um vírus transforma as pessoas em raivosos assassinos. Um grupo tenta sobreviver na desolada Londres.",
-        "company": "Fox Searchlight Pictures",
+        "company": "Paramount Pictures",
         "release_year": 2002,
         "featured": true,
         "cover": "/caminho/para/exterminio.png"
