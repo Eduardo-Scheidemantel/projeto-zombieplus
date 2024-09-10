@@ -5,9 +5,9 @@ test("deve cadastrar um lead na fila de espera", async ({ page }) => {
   const leadName = faker.person.fullName()
   const leadEmail = faker.internet.email()
   
-  await page.landing.visit()
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm(leadName, leadEmail)
+  await page.leads.visit()
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm(leadName, leadEmail)
   
   const message = (/compartilhar seus dados/)
   await page.toast.containText(message);
@@ -27,38 +27,38 @@ test("não deve cadastrar quando o email já existe", async ({ page, request }) 
 
   expect(newLead.ok()).toBeTruthy()
 
-  await page.landing.visit()
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm(leadName, leadEmail)
+  await page.leads.visit()
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm(leadName, leadEmail)
 
   const message = ("O endereço de e-mail fornecido já está registrado em nossa fila de espera.")
   await page.toast.containText(message);
 });
 
 test("não deve cadastrar com email incorreto", async ({ page }) => {
-  await page.landing.visit();
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm("Teste", "teste.testegmail.com")
-  await page.landing.alertHaveText("Email incorreto")
+  await page.leads.visit();
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm("Teste", "teste.testegmail.com")
+  await page.leads.alertHaveText("Email incorreto")
 });
 
 test("não deve cadastrar com nome vazio", async ({ page }) => {
-  await page.landing.visit()
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm("", "teste.teste@gmail.com")
-  await page.landing.alertHaveText("Campo obrigatório")
+  await page.leads.visit()
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm("", "teste.teste@gmail.com")
+  await page.leads.alertHaveText("Campo obrigatório")
 });
 
 test("não deve cadastrar com email vazio", async ({ page }) => {
-  await page.landing.visit()
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm("Teste", "")
-  await page.landing.alertHaveText("Campo obrigatório")
+  await page.leads.visit()
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm("Teste", "")
+  await page.leads.alertHaveText("Campo obrigatório")
 });
 
 test("não deve cadastrar com os campos vazios", async ({ page }) => {
-  await page.landing.visit()
-  await page.landing.openLeadModal()
-  await page.landing.submitLeadForm("", "")
-  await page.landing.alertHaveText(["Campo obrigatório", "Campo obrigatório"])
+  await page.leads.visit()
+  await page.leads.openLeadModal()
+  await page.leads.submitLeadForm("", "")
+  await page.leads.alertHaveText(["Campo obrigatório", "Campo obrigatório"])
 });
