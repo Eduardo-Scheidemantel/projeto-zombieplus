@@ -1,5 +1,4 @@
 import { expect } from "@playwright/test";
-import { Toast } from "./Components";
 
 export class Movies {
 
