@@ -5,8 +5,6 @@ const { executeSQL } = require("../support/database");
 test("deve cadastrar um lead na fila de espera", async ({ page }) => {
   const leadName = faker.person.fullName()
   const leadEmail = faker.internet.email()
-
-  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
   
   await page.leads.visit()
   await page.leads.openLeadModal()
@@ -14,14 +12,13 @@ test("deve cadastrar um lead na fila de espera", async ({ page }) => {
   
   const message = ('Agradecemos por compartilhar seus dados conosco. Em breve, nossa equipe entrará em contato.')
   await page.popup.haveText(message);
+
+  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
 });
 
 test("não deve cadastrar quando o email já existe", async ({ page, request }) => {
   const leadName = faker.person.fullName()
   const leadEmail = faker.internet.email()
-
-  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
-
 
   const newLead = await request.post('http://localhost:3333/leads', {
     data: {
@@ -38,6 +35,8 @@ test("não deve cadastrar quando o email já existe", async ({ page, request }) 
 
   const message = ("Verificamos que o endereço de e-mail fornecido já consta em nossa lista de espera. Isso significa que você está um passo mais perto de aproveitar nossos serviços.")
   await page.popup.haveText(message);
+
+  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
 });
 
 test("não deve cadastrar com email incorreto", async ({ page }) => {
