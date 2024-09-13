@@ -4,12 +4,10 @@ const data = require('../support/fixtures/movies.json')
 
 const { executeSQL } = require('../support/database')
 
-test.beforeAll(async () => {
-    await executeSQL(`DELETE from movies`)
-})
-
 test('deve ser possível cadastrar um novo filme', async ({ page }) => {
     const movie = data.create
+
+    await executeSQL(`DELETE FROM public.movies WHERE title = '${movie.title}';`)
 
     await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
     await page.movies.create(movie)
@@ -19,18 +17,30 @@ test('deve ser possível cadastrar um novo filme', async ({ page }) => {
 
 test('deve poder remover um filme', async ({ page, request }) => {
     const movie = data.to_remove
+
+    await executeSQL(`DELETE FROM public.movies WHERE title = '${movie.title}';`)
+
     await request.api.postMovie(movie)
 
     await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
+    await page.movies.remove(movie.title)
+    await page.popup.haveText('Filme removido com sucesso.')
+})
 
-    // x-path: //td[text()="A Noite dos Mortos-Vivos"]/..//button
+test('deve realizar busca pelo termo zumbi', async ({ page, request }) => {
+    const movies = data.search
 
-    await page.getByRole('row', { name: movie.title })
-        .getByRole('button').click()
+    await executeSQL(`DELETE FROM public.movies WHERE title like '%Zumbi%'`)
 
-    await page.click('.confirm-removal')
-    await page.popup.haveText(
-        'Filme removido com sucesso.')
+    movies.data.forEach(async (m) => {
+        await request.api.postMovie(m)
+    })
+
+    await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
+    await page.movies.search(movies.input)
+
+    const rows = page.getByRole('row')
+    await expect(rows).toContainText(movies.outputs)
 })
 
 test('não deve cadastrar quando o título é duplicado', async ({ page, request }) => {
