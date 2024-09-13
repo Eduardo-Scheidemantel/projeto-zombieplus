@@ -1,9 +1,12 @@
 const { test, expect } = require("../support")
-const { faker } = require('@faker-js/faker')
+const { faker } = require('@faker-js/faker');
+const { executeSQL } = require("../support/database");
 
 test("deve cadastrar um lead na fila de espera", async ({ page }) => {
   const leadName = faker.person.fullName()
   const leadEmail = faker.internet.email()
+
+  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
   
   await page.leads.visit()
   await page.leads.openLeadModal()
@@ -14,9 +17,11 @@ test("deve cadastrar um lead na fila de espera", async ({ page }) => {
 });
 
 test("não deve cadastrar quando o email já existe", async ({ page, request }) => {
-
   const leadName = faker.person.fullName()
   const leadEmail = faker.internet.email()
+
+  await executeSQL(`DELETE FROM leads WHERE name = '${leadName}';`)
+
 
   const newLead = await request.post('http://localhost:3333/leads', {
     data: {
